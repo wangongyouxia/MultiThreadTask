@@ -1,5 +1,7 @@
 import multiprocessing
 import ThreadWorker
+import logging
+import signal
 
 class MultiThreadTask():
 	have_added_task_num = 0
@@ -11,6 +13,7 @@ class MultiThreadTask():
 		self.thread_num = thread_num
 		self.task_per_thread = task_per_thread
 		self.callback=callback
+		self.no_params = no_params
 		self.init()
 
 	def add_thread_worker_into_pool(self):
@@ -20,21 +23,39 @@ class MultiThreadTask():
 			else:
 				add_num = self.task_num-self.have_added_task_num
 			self.have_added_task_num += add_num
-			print('add %s into pool'%self.params_list[-1*(add_num):])
-			self.pool.apply_async(ThreadWorker.worker,args=(self.func,self.task_per_thread,self.params_list[-1*(add_num):]),callback=self.callback)
+			logging.debug('add %s into pool'%self.params_list[-1*(add_num):])
+			self.pool.apply_async(self.worker,args=(self.func,self.no_params,self.params_queue,self.callback))
+			#self.pool.apply(ThreadWorker.worker,args=(self.func,self.task_per_thread,self.params_list[-1*(add_num):]))
 			self.params_list = self.params_list[:-1*add_num]
-			return self
+			return 
 		else:
-			return None
+			return
 
-	def start(self):
-		ret = self
-		while ret:
-			ret = self.add_thread_worker_into_pool()
+	def start(self,nouse=None):
+		#ret = self
+		logging.debug('the self.thread_num_list is %s'%self.thread_num_list)
+		for i in range(self.process_num):
+			logging.debug('add %s thread into pool'%self.thread_num_list[i])
+			self.pool.apply_async(ThreadWorker.worker,args=(self.func,self.thread_num_list[i],self.no_params,self.params_queue,self.callback))
+			#self.add_thread_worker_into_pool()
+		self.pool.close()
+		self.pool.join()
+
+	def exit(self,a=0,b=1):
+		self.pool.terminate()
 
 	def init(self):
-		if multiprocessing.cpu_count() > self.thread_num:
-			self.process_num = self.thread_num
-		else:
-			self.process_num = multiprocessing.cpu_count()
+		signal.signal(signal.SIGINT, self.exit)  
+		signal.signal(signal.SIGTERM, self.exit)  
+		self.process_num = multiprocessing.cpu_count()
 		self.pool = multiprocessing.Pool(self.process_num)
+		self.params_queue = multiprocessing.Manager().Queue(self.task_num)
+		for content in self.params_list:
+			self.params_queue.put(content)
+		self.thread_num_list = []
+		average = self.thread_num/self.process_num
+		for i in range(self.process_num):
+			if (self.thread_num%self.process_num) > i:
+				self.thread_num_list.append(average+1)
+			else:
+				self.thread_num_list.append(average)
