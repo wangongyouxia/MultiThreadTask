@@ -14,15 +14,19 @@ def worker(func,thread_num,no_params=False,params_queue=None,callback = None):
 def task_loop(func,no_params,params_queue=None,callback=None):
 	if not no_params:
 		while not params_queue.empty():
-			params = params_queue.get()
+			try:
+				params = params_queue.get_nowait()
+			except:
+				continue
 			ret = func(*(params))
 			if callback:
-				logging.debug('about to callback')
-				callback(*ret)
+				callback(ret)
 	else:
 		while not params_queue.empty():
-			params = params_queue.get()
+			try:
+				params = params_queue.get_nowait()
+			except:
+				continue
 			ret = func()
 			if callback:
-				logging.debug('about to callback')
-				callback(*ret)
+				callback(ret)
