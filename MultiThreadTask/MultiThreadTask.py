@@ -10,7 +10,10 @@ class MultiThreadTask():
 	def __init__(self,func,thread_num,params_list=[],no_params=False,task_num=False,callback=None):
 		self.func = func
 		self.params_list = params_list
+		self.endless = False
 		if no_params:
+			if task_num == -1:
+				self.endless = True
 			self.task_num = task_num
 			self.params_list = []
 			for i in range(task_num):
@@ -27,7 +30,7 @@ class MultiThreadTask():
 		try:
 			for i in range(self.process_num):
 				logging.debug('add %s thread into pool'%self.thread_num_list[i])
-				results = self.pool.apply_async(ThreadWorker.worker,args=(self.func,self.thread_num_list[i],self.no_params,self.params_queue,self.callback)).get(9999999)
+				results = self.pool.apply_async(ThreadWorker.worker,args=(self.func,self.thread_num_list[i],self.no_params,self.params_queue,self.callback,self.endless)).get(9999999)
 		except KeyboardInterrupt:
 			print("Caught KeyboardInterrupt, terminate workers and exit")
 			self.pool.terminate()

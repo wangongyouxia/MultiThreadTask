@@ -21,6 +21,9 @@ def print_i_want_to_sleep():
 	time.sleep(3)
 	print('I want to sleep!!!!!!')
 
+def print_i_need_money():
+	time.sleep(3)
+	print('I need money!!!!!!')
 
 
 if __name__ == '__main__':
@@ -35,6 +38,10 @@ if __name__ == '__main__':
 	task = mtt.MultiThreadTask(func=display_info,thread_num=3,params_list=params_list)
 	task.start()
 
-	# A case without parameters, work endlessly(task_number = -1 means endless work).
+	# A case without parameter, task_num means how many times do you want to run).
 	task = mtt.MultiThreadTask(func=print_i_want_to_sleep, thread_num=4, no_params=True,task_num=6)
+	task.start()
+
+	# A case without parameters, work endlessly(task_number = -1 means endless work).
+	task = mtt.MultiThreadTask(func=print_i_need_money, thread_num=4, no_params=True,task_num=-1)
 	task.start()

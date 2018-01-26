@@ -1,11 +1,21 @@
 import threading
 import logging
 
-def worker(func,thread_num,no_params=False,params_queue=None,callback = None):
+class FalseQueue():
+	def get_nowait(self):
+		return []
+	def empty(self):
+		return False
+
+def worker(func,thread_num,no_params=False,params_queue=None,callback = None,endless = False):
 	logging.debug('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!about to create thread')
 	thread_list = []
 	for i in range(thread_num):
-		thread_list.append(threading.Thread(target=task_loop,args=[func,no_params,params_queue,callback]))
+		if endless:
+			fq = FalseQueue()
+			thread_list.append(threading.Thread(target=task_loop,args=[func,no_params,fq,callback]))
+		else:
+			thread_list.append(threading.Thread(target=task_loop,args=[func,no_params,params_queue,callback]))
 	for t in thread_list:
 		t.start()
 	for t in thread_list:
