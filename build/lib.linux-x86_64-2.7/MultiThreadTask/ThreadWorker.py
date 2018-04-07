@@ -1,8 +1,4 @@
-import platform
-if platform.python_version().startswith('3'):
-	import _threading as threading
-else:
-	import threading
+import threading
 import logging
 
 class FalseQueue():
