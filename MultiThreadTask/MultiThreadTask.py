@@ -30,7 +30,8 @@ class MultiThreadTask():
 		try:
 			for i in range(self.process_num):
 				logging.debug('add %s thread into pool'%self.thread_num_list[i])
-				results = self.pool.apply_async(ThreadWorker.worker,args=(self.func,self.thread_num_list[i],self.no_params,self.params_queue,self.callback,self.endless)).get(9999999)
+				results = self.pool.apply_async(ThreadWorker.worker,args=(self.func,self.thread_num_list[i],self.no_params,self.params_queue,self.callback,self.endless))
+			results.get(999999999)
 		except KeyboardInterrupt:
 			print("Caught KeyboardInterrupt, terminate workers and exit")
 			self.pool.terminate()
