@@ -1,5 +1,5 @@
 import platform
-if platform.python_version().startswith('3'):
+if platform.python_version().startswith('4'):
 	import _threading as threading
 else:
 	import threading

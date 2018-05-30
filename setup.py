@@ -14,7 +14,7 @@ def long_description():
 
 setup(
     name='MultiThreadTask',
-    version='0.0.2',
+    version='0.0.3',
     url='https://github.com/wangongyouxia/MultiThreadTask',
     license='MIT',
     author='wangongyouxia',

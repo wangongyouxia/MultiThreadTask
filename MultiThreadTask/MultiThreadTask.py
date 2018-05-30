@@ -1,8 +1,9 @@
 import multiprocessing
-import ThreadWorker
+from . import ThreadWorker
 import logging
 import signal
 import sys
+import platform
 
 class MultiThreadTask():
 	have_added_task_num = 0
@@ -31,7 +32,8 @@ class MultiThreadTask():
 			for i in range(self.process_num):
 				logging.debug('add %s thread into pool'%self.thread_num_list[i])
 				results = self.pool.apply_async(ThreadWorker.worker,args=(self.func,self.thread_num_list[i],self.no_params,self.params_queue,self.callback,self.endless))
-			results.get(999999999)
+			if platform.python_version().startswith('2'):
+				results.get(999999999)
 		except KeyboardInterrupt:
 			print("Caught KeyboardInterrupt, terminate workers and exit")
 			self.pool.terminate()
