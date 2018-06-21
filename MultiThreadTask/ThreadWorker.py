@@ -1,8 +1,5 @@
 import platform
-if platform.python_version().startswith('4'):
-	import _threading as threading
-else:
-	import threading
+import threading
 import logging
 
 class FalseQueue():
@@ -14,7 +11,7 @@ class FalseQueue():
 def worker(func,thread_num,no_params=False,params_queue=None,callback = None,endless = False):
 	logging.debug('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!about to create thread')
 	thread_list = []
-	for i in range(thread_num):
+	for i in range(int(thread_num)):
 		if endless:
 			fq = FalseQueue()
 			thread_list.append(threading.Thread(target=task_loop,args=[func,no_params,fq,callback]))

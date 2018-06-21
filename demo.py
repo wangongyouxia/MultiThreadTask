@@ -1,4 +1,4 @@
-from MultiThreadTask import MultiThreadTask
+import MultiThreadTask
 import os
 import time
 

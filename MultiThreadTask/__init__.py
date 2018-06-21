@@ -1,1 +1,1 @@
-from MultiThreadTask import *
+from .MultiThreadTask import MultiThreadTask
