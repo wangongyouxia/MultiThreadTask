@@ -1,11 +1,11 @@
 # MultiThreadTask
-A python library use to allocate task averagely.
+A python library used to allocate task averagely.
 
 一个用于自动平均分配任务的python库
 
 ## User Guide
 
-### Install
+### Installation
 pip install MultiThreadTask
 
 To know how to use, please see [demo](https://github.com/wangongyouxia/MultiThreadTask/blob/master/demo.py)
