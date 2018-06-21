@@ -14,12 +14,12 @@ def long_description():
 
 setup(
     name='MultiThreadTask',
-    version='0.0.3',
+    version='0.0.4',
     url='https://github.com/wangongyouxia/MultiThreadTask',
     license='MIT',
     author='wangongyouxia',
     author_email='709865788@qq.com',
-    description='multi-thread-library',
+    description='multi-thread-task-library',
     long_description=long_description(),
     packages=find_packages(),
     install_requires=requirements()
