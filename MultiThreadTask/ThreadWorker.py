@@ -2,6 +2,7 @@ import platform
 import threading
 import logging
 
+#for task without params
 class FalseQueue():
 	def get_nowait(self):
 		return []
