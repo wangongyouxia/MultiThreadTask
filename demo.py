@@ -33,7 +33,7 @@ if __name__ == '__main__':
 	task = mtt.MultiThreadTask(func=add,thread_num=3,params_list=params_list,callback=callback_add)
 	task.start()
 
-	# A case with parameters. WARN: Every element in paramerter list must be iterable. You can use list or tuple. A WRONG case is [1,2], since 1 and 2 is not iterable.
+	# A case with parameters. WARN: Every element in parameter list must be iterable. You can use list or tuple. A WRONG case is [1,2], since 1 and 2 is not iterable.
 	params_list = [(1,),(2,),(3,),(4,)]
 	task = mtt.MultiThreadTask(func=display_info,thread_num=3,params_list=params_list)
 	task.start()
