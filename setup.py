@@ -3,8 +3,11 @@ from platform import python_version_tuple
 
 
 def requirements():
+    if python_version_tuple()[0] == "2":
         requirements = ['multiprocessing']
-	return requirements
+    else:
+        requirements = []
+    return requirements
 
 
 def long_description():
@@ -14,7 +17,7 @@ def long_description():
 
 setup(
     name='MultiThreadTask',
-    version='0.0.4',
+    version='0.0.5',
     url='https://github.com/wangongyouxia/MultiThreadTask',
     license='MIT',
     author='wangongyouxia',
